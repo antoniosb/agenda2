@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+ 
+<div class="container">
+  <ul class="list">
+    <li>Name: <%= @service.name %></li>
+    <li>Price: <%= number_to_currency_br(@service.price) %></li>
+    <li>Duration: <%= @service.duration %></li>
+    <li>Discount: <%= @service.discount %></li>
+  </ul>
+</div>
+
+
+<%= link_to 'Edit', edit_service_path(@service) %> |
+<%= link_to 'Back', services_path %>
