@@ -11,6 +11,10 @@ class Service < ActiveRecord::Base
   validates :price, 
       numericality: true,
       presence: true
+
+  validates :duration,
+      presence: true,
+      numericality: true
   
 
 end

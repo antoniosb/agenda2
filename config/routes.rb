@@ -1,9 +1,12 @@
 Agenda2::Application.routes.draw do
+  get "home/index"
   resources :services
   resources :appointments
   devise_for :users
 
   get "begin", to: "services#new", as: "user_root"
+
+  root :to=>"home#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

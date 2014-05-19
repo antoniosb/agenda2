@@ -7,13 +7,34 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div>
+  <% if current_user %>
+    <p>Account information:</p>
+    <ul>
+      <li>Name:<%= current_user.name %></li>
+      <li>Email:<%= current_user.email %></li>
+    </ul>
+  <% end %>
 
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
-<%= yield %>
+</div>
+<ul class="nav pull-right">
+  <li><%= link_to "Home",       root_path %></li>
+  <% if user_signed_in? %>
+    <li><%= link_to "Profile", edit_user_registration_path %></li>
+    <li> <%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
+  <% else %>
+    <li><%= link_to "Sign in", new_user_session_path %></li>
+  <% end %>
+</ul>
 
-<% if user_signed_in? %>
-  <%= link_to "Sign out", destroy_user_session_path, :method=>"delete" %>
-<% end %>
+<div class="container">
+  <%= flash_messages if show_layout_flash? %>
+
+  <div class="row">
+    <%= yield %>
+  </div>
+</div>
+
+
 </body>
 </html>

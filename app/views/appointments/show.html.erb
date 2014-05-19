@@ -1,4 +1,31 @@
 <p id="notice"><%= notice %></p>
 
+<div class="container">
+  <ul class="list">
+    <li>Date: <%= @appointment.appointment_date %></li>
+    <li>Status: <%= @appointment.status %></li>
+  </ul>
+  <% if @appointment.user.present? %>
+    <div>
+      <p>User</p>
+      <ul>
+        <li>Name: <%= @appointment.user.name %></li>
+        <li>Email: <%= @appointment.user.email %></li>
+      </ul>
+    </div>
+  <% end %>
+  <% if @appointment.service.present? %>
+    <div>
+      <p>Service</p>
+      <ul>
+        <li>Name: <%= @appointment.service.name %></li>
+        <li>Price: <%= number_to_currency_br(@appointment.service.price) %></li>
+        <li>Duration: <%= @appointment.service.duration %></li>
+        <li>Discount: <%= @appointment.service.discount %></li>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
 <%= link_to 'Edit', edit_appointment_path(@appointment) %> |
 <%= link_to 'Back', appointments_path %>

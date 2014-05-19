@@ -11,6 +11,36 @@
     </div>
   <% end %>
 
+<div class="container">
+  <% if @status %>
+    <% if current_user.admin? %>
+      <%= f.label :status %>
+      <% @status.each do |status| %>
+        <br><%= f.radio_button :status, status, :checked => @appointment.status == status %>
+        <%= status.humanize %>
+      <% end %>
+    <% else %>
+      <%= f.label :status %>
+      <% @status.each do |status| %>
+        <br><%= f.radio_button :status, status, :checked => @appointment.status == status, disabled: true %>
+        <%= status.humanize %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <p>
+    <%= f.label :user_id %><br/>
+    <%= f.select :user_id, @users, {} %>
+  </p>
+  <p>
+    <%= f.label :service_id %><br/>
+    <%= f.select :service_id, @services, {} %>
+  </p>
+  <p>
+    <%= f.label :appointment_date %>
+    <%= f.select :appointment_date, available_datetimes_for_next_week, {} %>
+  </p>
+</div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
