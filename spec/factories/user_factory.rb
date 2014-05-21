@@ -6,5 +6,10 @@ FactoryGirl.define do
 
     sequence(:password) { |n| (0..9).to_a.shuffle.join }
     
+    admin true
+
+    factory :user_not_admin do
+      admin false
+    end
   end
 end

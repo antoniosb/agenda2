@@ -6,6 +6,10 @@ describe ServicesController do
 
   let!(:service) { create(:service) }
 
+  before(:each) do
+      controller.stub(:current_user).and_return(create(:user))
+  end
+
   describe "GET index" do
     it "assigns all services as @services" do
       get :index

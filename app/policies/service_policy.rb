@@ -6,5 +6,4 @@ class ServicePolicy < ApplicationPolicy
     @record = record
   end
 
-
 end

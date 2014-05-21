@@ -10,6 +10,10 @@ describe AppointmentsController do
       service_id: create(:service).id 
     } }
 
+  before(:each) do
+      controller.stub(:current_user).and_return(create(:user))
+  end
+
   describe "GET index" do
     it "assigns all appointments as @appointments" do
       get :index, {}
@@ -26,7 +30,7 @@ describe AppointmentsController do
 
   describe "GET new" do
     it "assigns a new appointment as @appointment" do
-      get :new, {}
+      get :new, { }
       assigns(:appointment).should be_a_new(Appointment)
     end
   end
