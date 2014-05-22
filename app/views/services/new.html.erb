@@ -1,5 +1,12 @@
-<h1>New service</h1>
+<%= resource_error_messages(@service) if resource_error_messages?(@service) %>
 
-<%= render 'form' %>
+<div class="col-md-6 col-md-offset-3 panel well signin panel-default">
 
-<%= link_to 'Back', services_path %>
+  <h1 class='text-info text-center'>New service</h1>
+
+  <%= render 'form' %>
+
+  <div class='btn-group btn-group pull-right'>
+    <span class='btn btn-default'><%= link_to 'Back', services_path %></span>
+  </div>
+</div>

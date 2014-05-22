@@ -15,6 +15,5 @@ class Service < ActiveRecord::Base
   validates :duration,
       presence: true,
       numericality: true
-  
-
+      
 end

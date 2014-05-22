@@ -19,6 +19,8 @@ class Appointment < ActiveRecord::Base
 
   scope :token_datetimes, -> { Appointment.where( status:['pending','confirmed']).pluck(:appointment_date) }
 
+  scope :by_datetime, -> { Appointment.order(:appointment_date) }
+
 private
     def downcase_status
       self.status = status.try(:downcase)

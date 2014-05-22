@@ -1,41 +1,37 @@
-<h1>Listing appointments</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Status</th>
-      <th>User_name</th>
-      <th>Service_name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% policy_scope(@appointments).each do |appointment| %>
-      <tr>
-        <td><%= appointment.appointment_date %></td>
-        <td><%= appointment.status %></td>
-        <% if appointment.user.present? %>
-          <td><%= appointment.user.name %></td>
-        <% else %>
-          <td></td>
+<div class=" well well-lg service-list">
+  <h1 class='text-center text-info'>Listing appointments</h1>
+  
+  <div class="panel panel-info">
+    <div class='panel-body '>
+    <table class="table table-stripped table-hover">
+      <thead class='text-info'>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+          <th>User</th>
+          <th>Service</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% policy_scope(@appointments).each do |appointment| %>
+          <tr data-link="<%= edit_appointment_path(appointment) %>">
+            <td><%= appointment.appointment_date.strftime('%A, %R (%d %B)') %></td>
+            <td class='status-color'><%= appointment.status.humanize %></td>
+            <% if appointment.user.present? %>
+              <td><%= appointment.user.name.humanize %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+            <% if appointment.service.present? %>
+              <td><%= appointment.service.name %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+          </tr>
         <% end %>
-        <% if appointment.service.present? %>
-          <td><%= appointment.service.name %></td>
-        <% else %>
-          <td></td>
-        <% end %>
-        <td><%= link_to 'Show', appointment %></td>
-        <td><%= link_to 'Edit', edit_appointment_path(appointment) %></td>
-        <td><%= link_to 'Destroy', appointment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Appointment', new_appointment_path %>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <h2><span class='btn btn-default btn-lg pull-right'><%= link_to 'New Appointment', new_appointment_path %></span></h2>
+</div>

@@ -1,20 +1,5 @@
-module LayoutHelper
-  def flash_messages(opt={})
-    @layout_flash = opt.fetch(:layout_flash) { true }
-
-    capture do
-      flash.each do |name, msg|
-        concat content_tag(:div, msg, id: "flash_#{name}")
-      end
-    end
-  end
-
-  def show_layout_flash?
-    @layout_flash.nil? ? true : @layout_flash
-  end
-
-
-  def resource_error_messages(resource)
+module DeviseHelper
+  def devise_error_messages!
     return "" if resource.errors.empty?
 
     messages = resource.errors.full_messages.map { |msg| content_tag(:div, msg) }.join
@@ -34,14 +19,20 @@ module LayoutHelper
     html.html_safe
   end
 
-  def resource_error_messages?(resource)
+  def devise_error_messages?
     !resource.errors.empty?
   end
 
+  def resource_name
+    :user
+  end
 
+  def resource
+    @resource ||= User.new
+  end
 
-
-
-
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
 
 end

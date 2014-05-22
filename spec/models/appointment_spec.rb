@@ -25,9 +25,19 @@ describe Appointment do
     it "should retrieve dates as a valid format" do
       expect(Appointment.token_datetimes).to be_an_instance_of Array
       Appointment.token_datetimes.each do |token_datetime|
-        #expect(token_datetime).to be_an_instance_of DateTime
         expect(token_datetime).to be_a_kind_of Time
       end
+    end
+  end
+
+  context "scope: by_datetime" do
+    before(:each) { create_list(:appointment, 3) }
+    it "should retrieve all Appointments" do
+      expect(Appointment.all.count).to eq Appointment.by_datetime.count
+    end
+    it "should retrieve ordered by nearest datetime" do
+
+      expect(Appointment.by_datetime.first.appointment_date).to eq Appointment.minimum(:appointment_date)
     end
   end
 end

@@ -4,7 +4,7 @@ class AppointmentsController < ApplicationController
   
   # GET /appointments
   def index
-    @appointments = Appointment.all
+    @appointments = Appointment.by_datetime
     authorize @appointments
   end
 

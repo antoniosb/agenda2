@@ -1,6 +1,15 @@
-<h1>Editing service</h1>
+<%= resource_error_messages(@service) if resource_error_messages?(@service) %>
 
-<%= render 'form' %>
+<div class="col-md-6 col-md-offset-3 panel well signin panel-default">
 
-<%= link_to 'Show', @service %> |
-<%= link_to 'Back', services_path %>
+  <h1 class='text-info text-center'>Editing service</h1>
+
+  <%= render 'form' %>
+
+  <div class='btn-group btn-group pull-right'>
+    <span class='btn btn-default'><%= link_to 'Show', @service %></span>
+    <span class='btn btn-default'><%= link_to 'Back', services_path %></span>
+    <span class='btn btn-default'><%= link_to 'Destroy', @service, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+  </div>
+</div>
+

@@ -1,33 +1,32 @@
-<%= form_for(@service) do |f| %>
-  <% if @service.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h2>
+  <div class="panel-body">
+    <%= form_for(@service) do |f| %>
 
-      <ul>
-      <% @service.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+      <div class='input-group'>
+        <span class='input-group-addon glyphicon glyphicon-user'></span>
+          <%= f.text_field :name, class:'form-control', placeholder:'Name' %>
+      </div>
+
+      <div class='input-group'>
+        <span class='input-group-addon glyphicon glyphicon-usd'></span>
+          <%= f.text_field :price, class:'form-control', placeholder:'Price' %>
+      </div>
+             
+      <div class='input-group'>
+        <span class='input-group-addon glyphicon glyphicon-time'></span>
+          <%= f.number_field :duration, class:'form-control', placeholder:'Duration' %>
+      </div>
+            
+      <div class='input-group'>
+        <span class='input-group-addon '><strong>%</strong></span>
+          <%= f.text_field :discount, class:'form-control', placeholder:'Discount' %>
+      </div>
+      
+      <% if action_name == 'new' %>
+          <%= render 'form_submit_button_new' %>
+      <% elsif action_name == 'edit'%>
+          <%= render 'form_submit_button_edit' %>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="container">
-    <p>
-      <%= f.label :name %><br/>
-      <%= f.text_field :name %>
-    </p>
-      <%= f.label :price %><br/>
-      <%= f.text_field :price %>
-    </p>
-      <%= f.label :duration %><br/>
-      <%= f.number_field :duration %>
-    </p>
-      <%= f.label :discount %><br/>
-      <%= f.text_field :discount %>
-    </p>
-  </div>
+    <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
   </div>
-<% end %>

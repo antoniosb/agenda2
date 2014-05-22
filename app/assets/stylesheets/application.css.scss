@@ -1,1 +1,39 @@
 @import "bootstrap";
+@import "layout";
+@import "signin";
+
+body { padding-top: 70px; }
+
+.user_info{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 5px 0 5px 5px;
+}
+
+.navbar{
+  max-height: 30px;
+}
+
+.nav { 
+  padding-top: 5px;
+}
+
+.navbar-text{
+  margin-top: 0;
+}
+
+#error_explanation {
+  @extend .alert;
+  @extend .alert-danger;
+}
+
+.form_error{
+  padding: 0 0 5px 0;
+}
+
+.input-group{
+  margin: 5px 0;
+}
+
+#edit_current_password {
+}

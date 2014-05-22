@@ -1,6 +1,15 @@
-<h1>Editing appointment</h1>
+<%= resource_error_messages(@appointment) if resource_error_messages?(@appointment) %>
 
-<%= render 'form' %>
+<div class="col-md-6 col-md-offset-3 panel well signin panel-default">
 
-<%= link_to 'Show', @appointment %> |
-<%= link_to 'Back', appointments_path %>
+  <h1 class='text-info text-center'>Editing appointment</h1>
+
+  <%= render 'form' %>
+
+  <div class='btn-group btn-group pull-right'>
+    <span class='btn btn-default'><%= link_to 'Show', @appointment %></span>
+    <span class='btn btn-default'><%= link_to 'Back', appointments_path %></span>
+    <span class='btn btn-default'><%= link_to 'Destroy', @appointment, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+  </div>
+</div>
+

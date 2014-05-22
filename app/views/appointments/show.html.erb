@@ -1,31 +1,59 @@
-<p id="notice"><%= notice %></p>
+<div class="col-md-6 col-md-offset-3 panel well signin panel-default">
 
-<div class="container">
-  <ul class="list">
-    <li>Date: <%= @appointment.appointment_date %></li>
-    <li>Status: <%= @appointment.status %></li>
-  </ul>
-  <% if @appointment.user.present? %>
-    <div>
-      <p>User</p>
-      <ul>
-        <li>Name: <%= @appointment.user.name %></li>
-        <li>Email: <%= @appointment.user.email %></li>
+  <h2 class='text-info text-center'><strong>Appointment Details</strong></h2>
+
+  <div class='panel panel-info'>
+      
+      <ul class="list-group">
+        <li class='list-group-item list-group-item-default'>
+          <h3 class='text-info'><strong>Date:</strong><span class='label label-info pull-right'><%= @appointment.appointment_date %></span></h3>
+        </li>
+        <li class='list-group-item list-group-item-default'>
+          <h3 class='text-info'><strong>Status:</strong><span class='label label-info pull-right'><%= @appointment.status %></span></h3>
+        </li>
+        <% if @appointment.user.present? %>
+          <li class='list-group-item list-group-item-default'>
+            <h5 class='text-info text-center'><strong>User information:</strong></h5>
+          </li>
+
+          <li class='list-group-item list-group-item-default'>
+            <h3 class='text-info'><strong>Name:</strong><span class='label label-info pull-right'><%= @appointment.user.name.humanize %></span></h3>
+          </li>
+
+          <li class='list-group-item list-group-item-default'>
+            <h3 class='text-info'><strong>Email:</strong><span class='label label-info pull-right'><%= @appointment.user.email %></span></h3>
+          </li>
+        <% end %>
+        <% if @appointment.service.present? %>
+          <li class='list-group-item list-group-item-default'>
+            <h5 class='text-info text-center'><strong>Service information:</strong></h5>
+          </li>
+
+          <li class='list-group-item list-group-item-default'>
+            <h3 class='text-info'><strong>Name:</strong><span class='label label-info pull-right'><%= @appointment.service.name.humanize %></span></h3>
+          </li>
+
+          <li class='list-group-item list-group-item-default'>
+            <h3 class='text-info'><strong>Price:</strong><span class='label label-info pull-right'><%= number_to_currency_br(@appointment.service.price) %></span></h3>
+          </li>
+
+          <li class='list-group-item list-group-item-default'>
+            <h3 class='text-info'><strong>Duration:</strong><span class='label label-info pull-right'><%= @appointment.service.duration %>&nbsp;minutes</span></h3>
+          </li>
+
+          <li class='list-group-item list-group-item-default'>
+            <h3 class='text-info'><strong>Discount:</strong><span class='label label-info pull-right'><%= @appointment.service.discount || 0 %>&nbsp;&#37;</span></h3>
+          </li>
+
+        <% end %>
+
       </ul>
-    </div>
-  <% end %>
-  <% if @appointment.service.present? %>
-    <div>
-      <p>Service</p>
-      <ul>
-        <li>Name: <%= @appointment.service.name %></li>
-        <li>Price: <%= number_to_currency_br(@appointment.service.price) %></li>
-        <li>Duration: <%= @appointment.service.duration %></li>
-        <li>Discount: <%= @appointment.service.discount %></li>
-      </ul>
-    </div>
-  <% end %>
+
+  </div>
+
+  <div class='btn-group btn-group-lg pull-right'>
+    <span class='btn btn-default'><%= link_to 'Edit', edit_appointment_path(@appointment) %> </span>
+    <span class='btn btn-default'><%= link_to 'Back', appointments_path %></span>
+    <span class='btn btn-default'><%= link_to 'Destroy', @appointment, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+  </div>
 </div>
-
-<%= link_to 'Edit', edit_appointment_path(@appointment) %> |
-<%= link_to 'Back', appointments_path %>

@@ -4,7 +4,7 @@ Agenda2::Application.routes.draw do
   resources :appointments
   devise_for :users
 
-  get "begin", to: "services#new", as: "user_root"
+  get "begin", to: "appointments#index", as: "user_root"
 
   root :to=>"home#index"
 

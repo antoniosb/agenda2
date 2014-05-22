@@ -1,47 +1,52 @@
-<%= form_for(@appointment) do |f| %>
-  <% if @appointment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+<div class="panel-body">
+  <%= form_for(@appointment) do |f| %>
+    
+      <% if @status %>
+        <div class='col-md-4'>
+          <div class='input-group no-margin'>
+            <span class='input-group-addon glyphicon glyphicon-stats'></span>
+            <span class='form-control'>Status</span>
+          </div>
+        <% if current_user.admin? %>
+          <% @status.each do |status| %>
+            <div class='input-group no-margin'>
+              <span class='input-group-addon'><%= f.radio_button :status, status, :checked => @appointment.status == status %></span>
+              <span class='form-control'><%= status.humanize %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <%= f.label :status %>
+          <% @status.each do |status| %>
+            <div class='input-group no-margin'>
+              <span class='input-group-addon'><%= f.radio_button :status, status, :checked => @appointment.status == status, disabled: true %></span>
+              <span class='form-control'><%= status.humanize %></span>
+            </div>
+          <% end %>
+        <% end %>
 
-      <ul>
-      <% @appointment.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+      </div>
       <% end %>
-      </ul>
+
+    <div class='input-group'>
+      <span class='input-group-addon glyphicon glyphicon-user'></span>
+      <%= f.select :user_id, @users, {}, class:'form-control' %>
     </div>
-  <% end %>
 
-<div class="container">
-  <% if @status %>
-    <% if current_user.admin? %>
-      <%= f.label :status %>
-      <% @status.each do |status| %>
-        <br><%= f.radio_button :status, status, :checked => @appointment.status == status %>
-        <%= status.humanize %>
-      <% end %>
-    <% else %>
-      <%= f.label :status %>
-      <% @status.each do |status| %>
-        <br><%= f.radio_button :status, status, :checked => @appointment.status == status, disabled: true %>
-        <%= status.humanize %>
-      <% end %>
+    <div class='input-group'>
+      <span class='input-group-addon glyphicon glyphicon-screenshot'></span>
+      <%= f.select :service_id, @services, {}, class:'form-control' %>
+    </div>
+
+    <div class='input-group'>
+      <span class='input-group-addon glyphicon glyphicon-calendar'></span>
+      <%= f.select :appointment_date, available_datetimes_for_next_week, {}, class:'form-control' %>
+    </div>
+
+    <% if action_name == 'new' %>
+        <%= render 'form_submit_button_new' %>
+    <% elsif action_name == 'edit'%>
+        <%= render 'form_submit_button_edit' %>
     <% end %>
+      
   <% end %>
-  <p>
-    <%= f.label :user_id %><br/>
-    <%= f.select :user_id, @users, {} %>
-  </p>
-  <p>
-    <%= f.label :service_id %><br/>
-    <%= f.select :service_id, @services, {} %>
-  </p>
-  <p>
-    <%= f.label :appointment_date %>
-    <%= f.select :appointment_date, available_datetimes_for_next_week, {} %>
-  </p>
 </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
