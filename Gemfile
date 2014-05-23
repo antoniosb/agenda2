@@ -6,7 +6,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'devise'
-gem 'sqlite3'
+gem 'pg'
 gem 'bootstrap-sass'
 gem 'pundit'
 
@@ -22,3 +22,9 @@ group :development, :test do
   gem 'letter_opener'
   gem 'email_spec'
 end
+
+group :production do
+  gem 'rails_12factor'
+end
+
+ruby "2.0.0"
