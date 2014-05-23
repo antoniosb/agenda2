@@ -9,6 +9,7 @@ gem 'devise'
 gem 'pg'
 gem 'bootstrap-sass'
 gem 'pundit'
+gem 'unicorn'
 
 group :development, :test do
   gem 'guard'
