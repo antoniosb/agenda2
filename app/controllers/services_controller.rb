@@ -5,6 +5,8 @@ class ServicesController < ApplicationController
   def index
     @services = Service.all
     authorize @services
+
+    @service = Service.new
   end
 
   # GET /services/1
@@ -27,11 +29,19 @@ class ServicesController < ApplicationController
   def create
     @service = Service.new(service_params)
     authorize @service
-    if @service.save
-      redirect_to @service, notice: 'Service was successfully created.'
-    else
-      render action: 'new'
+
+    respond_to do |format|
+      if @service.save
+        format.html { redirect_to @service, notice: 'Service was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @service }
+        format.js   { render action: 'show', status: :created, location: @service }
+      else
+        format.html { render action: 'new' } 
+        format.json { render json: @service.errors, status: :unprocessable_entity }
+        format.js   { render json: @service.errors, status: :unprocessable_entity }
+      end
     end
+    
   end
 
   # PATCH/PUT /services/1

@@ -1,5 +1,9 @@
+<% modal ||= false %>
+<% remote = modal ? true : false %>
+
   <div class="panel-body">
-    <%= form_for(@service) do |f| %>
+    <%= form_for(@service, remote: remote, html:{ role: :form, 'data-model'=>'service' }) do |f| %>
+      <%= resource_error_messages(@service) if @service.errors.any? %>
 
       <div class='input-group'>
         <span class='input-group-addon glyphicon glyphicon-user'></span>
@@ -21,7 +25,7 @@
           <%= f.text_field :discount, class:'form-control', placeholder:'Discount' %>
       </div>
       
-      <% if action_name == 'new' %>
+      <% if modal %>
           <%= render 'form_submit_button_new' %>
       <% elsif action_name == 'edit'%>
           <%= render 'form_submit_button_edit' %>

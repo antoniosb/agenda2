@@ -1,0 +1,10 @@
+<tr data-link="<%= edit_service_path(service) %>">
+  <td><%= service.name.humanize %></td>
+  <td><%= number_to_currency_br(service.price) %></td>
+  <td><%= service.duration %>&nbsp;minutes</td>
+  <% if service.discount  %>
+    <td><%= service.discount%>&nbsp;&#37;</td>
+  <% else %>
+    <td></td>
+  <% end %>
+</tr>
