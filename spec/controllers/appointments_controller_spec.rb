@@ -17,7 +17,7 @@ describe AppointmentsController do
   describe "GET index" do
     it "assigns all appointments as @appointments" do
       get :index, {}
-      assigns(:appointments).should eq(Appointment.all)
+      assigns(:appointments).count.should eq(Appointment.all.count)
     end
   end
 
