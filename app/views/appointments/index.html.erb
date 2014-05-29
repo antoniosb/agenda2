@@ -3,7 +3,7 @@
   
   <div class="panel panel-info">
     <div class='panel-body '>
-    <table class="table table-stripped table-hover">
+    <table class="table table-stripped table-hover" id="appointments_table">
       <thead class='text-info'>
         <tr>
           <th>Date</th>
@@ -14,24 +14,34 @@
       </thead>
       <tbody>
         <% policy_scope(@appointments).each do |appointment| %>
-          <tr data-link="<%= edit_appointment_path(appointment) %>">
-            <td><%= appointment.appointment_date.strftime('%A, %R (%d %B)') %></td>
-            <td class='status-color'><%= appointment.status.humanize %></td>
-            <% if appointment.user.present? %>
-              <td><%= appointment.user.name.humanize %></td>
-            <% else %>
-              <td></td>
-            <% end %>
-            <% if appointment.service.present? %>
-              <td><%= appointment.service.name %></td>
-            <% else %>
-              <td></td>
-            <% end %>
-          </tr>
+          <%= render partial: 'table_row', locals:{ appointment: appointment } %>
         <% end %>
       </tbody>
     </table>
     </div>
   </div>
-  <h2><span class='btn btn-default btn-lg pull-right'><%= link_to 'New Appointment', new_appointment_path %></span></h2>
+  <h2><%= link_to 'New Appointment', '#new_appointment_modal', 'data-toggle'=>'modal', class:'btn btn-primary btn-lg pull-right', id:'new_appointment_link' %></h2>
+</div>
+
+
+<%# Bootstrap modal markup. @see: http://getbootstrap.com/javascript/#modals %>
+<div class="modal fade" id="new_appointment_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog panel well signin panel-default">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h1 class='text-info text-center' id="myModalLabel">New Appointment</h1>
+      </div>
+
+        <div id='help-block'>
+
+        </div>
+
+      <div class="modal-body">
+        <%# Render the new person form (passing modal => true to enable remote => true) %>
+        <%= render 'form', modal: true %>
+      </div>
+
+    </div>
+  </div>
 </div>

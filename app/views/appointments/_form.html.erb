@@ -1,5 +1,8 @@
+<% modal ||= false %>
+<% remote = modal ? true : false %>
+
 <div class="panel-body">
-  <%= form_for(@appointment) do |f| %>
+  <%= form_for(@appointment, remote: remote, html:{ role: :form, 'data-model'=>'appointment' }) do |f| %>
     
       <% if @status %>
         <div class='col-md-4'>
@@ -42,7 +45,8 @@
       <%= f.select :appointment_date, available_datetimes_for_next_week, {}, class:'form-control' %>
     </div>
 
-    <% if action_name == 'new' %>
+
+    <% if modal %>
         <%= render 'form_submit_button_new' %>
     <% elsif action_name == 'edit'%>
         <%= render 'form_submit_button_edit' %>

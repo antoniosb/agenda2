@@ -1,8 +1,95 @@
-jQuery(function($) {
+
+$(document).ready(function(){
+
+//it makes every table row (which is an appointment description) clickable
   $("tr[data-link]").click(function() {
-    window.location = this.dataset.link
+    window.location = this.dataset.link;
+    fetch_appointments_dates();
   });
 
+//it makes the table rows colored depending on its status
+  colorize_appointments();
+
+//it shows the form errors on a proper location
+  $(document).bind('ajaxError', 'form#new_appointment', function(event, jqxhr, settings, exception){
+    // note: jqxhr.responseJSON undefined, parsing responseText instead
+    $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
+  });
+
+//it prevents the div that show errors not to appear
+  $('.create-appointment').click(function(){
+    $('#help-block').fadeIn(1000);
+  });
+
+//it populates the available dates of the appointment form
+  $('#new_appointment_link').click(function(){
+    fetch_appointments_dates();
+  });
+
+//it ensures that the options won't be duplicated
+  $('div#new_appointment_modal').on('hidden.bs.modal', function () {
+    $('#appointment_appointment_date').find('option').remove();
+  });
+
+
+
+});
+
+(function($) {
+
+//handles a successfull modal appearance
+  $.fn.modal_success = function(){
+    // close modal
+    this.modal('hide');
+
+    // clear form input elements
+    // todo/note: handle textarea, select, etc
+    this.find('form select"]').attr('selectedIndex', '0');
+
+    // clear error state
+    this.clear_previous_errors();
+  };
+
+//handles a error modal appearance
+  $.fn.render_form_errors = function(errors){
+
+    $form = this;
+    this.clear_previous_errors();
+    model = this.data('model');
+  
+    $('#help-block').addClass('alert alert-danger');
+    $('#help-block').append("<span class='glyphicon glyphicon-remove-sign'></span><strong>&nbsp;&nbsp;Invalid data:</strong></br><div id='inner-help-block'></div>");
+    
+    // show error messages in input form-group help-block
+    $.each(errors, function(field, messages){
+      $input = $('input[name="' + model + '[' + field + ']"]');
+      $input.closest('.input-group').addClass('has-error');
+
+        $.each(messages, function(index, msg) {
+          $('#inner-help-block').append("<span><strong>"+field+"</strong>&nbsp;"+msg+"</span></br>");
+        });
+
+    });
+    $('#help-block').css('text-transform','capitalize');
+
+  };
+
+//handles the cleaning between modals appearances
+  $.fn.clear_previous_errors = function(){
+    $('.input-group.has-error', this).each(function(){
+      $(this).removeClass('has-error');
+    });
+
+    $('#help-block').html('');
+    $('#help-block').removeClass('alert alert-danger');
+    
+
+  }
+
+}(jQuery));
+
+//makes the appointments table colored
+var colorize_appointments = function(){
   $(".status-color").each(function(){
       var status = $(this).html().toLowerCase().trim();
 
@@ -23,5 +110,14 @@ jQuery(function($) {
           $(this).parent().addClass('label-default');
       }
   });
+};
 
-})
+//populates the select tag of the appointments form with available dates
+var fetch_appointments_dates = function(){
+  $.post('/appointments_dates').success(function(data){
+    data_array = $.parseJSON(data);
+    $.each(data_array, function(index, value){
+      $('#appointment_appointment_date').append("<option value='"+value[1]+"'>"+value[0]+"</option>");
+    });
+  });
+};

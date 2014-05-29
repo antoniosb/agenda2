@@ -1,11 +1,23 @@
 class AppointmentsController < ApplicationController
+  include AppointmentsHelper
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
-  before_action :set_users_and_services, only:[:new, :create, :edit]
+  before_action :set_users_and_services, only:[:new, :create, :edit, :index]
   
+  #POST /appointments_dates
+  def fetch_dates
+    @dates = available_datetimes_for_next_week
+    respond_to do |format|
+      format.js { render json: @dates, status: :ok, location: :appointments }
+      format.json { render json: @dates, status: :ok, location: :appointments }
+    end
+  end
+
   # GET /appointments
   def index
     @appointments = Appointment.by_datetime
     authorize @appointments
+
+    @appointment = Appointment.new
   end
 
   # GET /appointments/1
@@ -30,10 +42,16 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new(appointment_params)
     authorize @appointment
 
-    if @appointment.save
-      redirect_to @appointment, notice: 'Appointment was successfully created.'
-    else
-      render action: 'new'
+    respond_to do |format|
+      if @appointment.save
+        format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @appointment }
+        format.js { render action: 'show', status: :created, location: @appointment }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @appointment.errors, status: :unprocessable_entity }
+        format.js { render json: @appointment.errors, status: :unprocessable_entity }
+      end
     end
   end
 

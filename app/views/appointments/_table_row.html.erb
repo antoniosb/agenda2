@@ -1,0 +1,14 @@
+<tr data-link="<%= edit_appointment_path(appointment) %>">
+  <td><%= appointment.appointment_date.strftime('%A, %R (%d %B)') %></td>
+  <td class='status-color'><%= appointment.status.humanize %></td>
+  <% if appointment.user.present? %>
+    <td><%= appointment.user.name.humanize %></td>
+  <% else %>
+    <td></td>
+  <% end %>
+  <% if appointment.service.present? %>
+    <td><%= appointment.service.name %></td>
+  <% else %>
+    <td></td>
+  <% end %>
+</tr>
