@@ -3,11 +3,18 @@ $(document).ready(function(){
 
   var user = $("meta[name=user_id]").attr("content");
   PrivatePub.subscribe("/appointments/"+user, function(data, channel){
+    var action = data.action_name;
     var appointment = $.parseJSON(data.appointment);
-    var service = $.parseJSON(data.service);
-    var user = $.parseJSON(data.user);
-    make_appointment_row(appointment, user, service);
-    colorize_appointments();
+    
+    if(action=='update'){
+      var service = $.parseJSON(data.service);
+      var user = $.parseJSON(data.user);
+      make_appointment_row(appointment, user, service);
+      colorize_appointments();
+    }else if(action=='destroy'){
+      alert(appointment);
+      remove_appointment_row(appointment);
+    };
   });
 
 
@@ -144,4 +151,10 @@ var make_appointment_row = function(appointment, user, service){
               </tr> "
 $('tr#'+appointment.id).replaceWith(newTr);
 $('tr#'+appointment.id).css('text-transform', 'capitalize');
-}
+};
+
+var remove_appointment_row = function(appointment){
+  $('tr#'+appointment.id).fadeOut(1000, 'linear', function(){
+    $(this).remove();
+  });
+};

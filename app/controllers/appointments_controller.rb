@@ -62,7 +62,8 @@ class AppointmentsController < ApplicationController
       PrivatePub.publish_to( "/appointments/#{@appointment.user.id}", 
         appointment: @appointment.to_json, 
         user: @appointment.user.to_json, 
-        service: @appointment.service.to_json )
+        service: @appointment.service.to_json,
+        action_name: "update" )
 
       redirect_to :appointments, notice: 'Appointment was successfully updated.'
     else
@@ -73,11 +74,11 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1
   def destroy
     authorize @appointment
-    if current_user.admin?
-      @appointment.destroy
-    else
-      @appointment.update_attribute :status, Appointment::CANCELED
-    end
+    @appointment.destroy
+    PrivatePub.publish_to("/appointments/#{@appointment.user.id}",
+      appointment: @appointment.to_json,
+      action_name: "destroy")     
+
     redirect_to appointments_url, notice: 'Appointment was successfully destroyed.'
   end
 
