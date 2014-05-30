@@ -1,6 +1,17 @@
 
 $(document).ready(function(){
 
+  var user = $("meta[name=user_id]").attr("content");
+  PrivatePub.subscribe("/appointments/"+user, function(data, channel){
+    var appointment = $.parseJSON(data.appointment);
+    var service = $.parseJSON(data.service);
+    var user = $.parseJSON(data.user);
+    make_appointment_row(appointment, user, service);
+    colorize_appointments();
+  });
+
+
+
 //it makes every table row (which is an appointment description) clickable
   $("tr[data-link]").click(function() {
     window.location = this.dataset.link;
@@ -121,3 +132,16 @@ var fetch_appointments_dates = function(){
     });
   });
 };
+
+
+var make_appointment_row = function(appointment, user, service){
+  var formatted_appointment_date = $.format.date(appointment.appointment_date, "ddd, HH:mm (dd MMM)");
+  var newTr = "<tr data-link='/appointments/"+appointment.id+"/edit' id="+appointment.id+"> \
+                <td>"+formatted_appointment_date+"</td> \
+                <td class='status-color'>"+appointment.status+"</td> \
+                  <td>"+user.name+"</td> \
+                  <td>"+service.name+"</td> \
+              </tr> "
+$('tr#'+appointment.id).replaceWith(newTr);
+$('tr#'+appointment.id).css('text-transform', 'capitalize');
+}

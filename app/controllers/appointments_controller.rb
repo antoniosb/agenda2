@@ -59,6 +59,11 @@ class AppointmentsController < ApplicationController
   def update
     authorize @appointment
     if @appointment.update(appointment_params)
+      PrivatePub.publish_to( "/appointments/#{@appointment.user.id}", 
+        appointment: @appointment.to_json, 
+        user: @appointment.user.to_json, 
+        service: @appointment.service.to_json )
+
       redirect_to :appointments, notice: 'Appointment was successfully updated.'
     else
       render action: 'edit'

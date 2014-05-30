@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require private_pub
+//= require jquery-dateFormat
 //= require_tree .
