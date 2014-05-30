@@ -58,12 +58,23 @@ class AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1
   def update
     authorize @appointment
+    old_user_id = @appointment.user_id_was
     if @appointment.update(appointment_params)
       PrivatePub.publish_to( "/appointments/#{@appointment.user.id}", 
         appointment: @appointment.to_json, 
-        user: @appointment.user.to_json, 
+        user: @appointment.user.to_json,
         service: @appointment.service.to_json,
         action_name: "update" )
+      
+      if old_user_id != @appointment.user_id
+        PrivatePub.publish_to( "/appointments/#{old_user_id}",
+          %Q{
+            $('tr##{@appointment.id}').fadeOut(1000, 'linear', function(){
+              $(this).remove();
+            });     
+          })
+      end
+
 
       redirect_to :appointments, notice: 'Appointment was successfully updated.'
     else

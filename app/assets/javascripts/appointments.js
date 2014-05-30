@@ -5,16 +5,16 @@ $(document).ready(function(){
   PrivatePub.subscribe("/appointments/"+user, function(data, channel){
     var action = data.action_name;
     var appointment = $.parseJSON(data.appointment);
-    
+
     if(action=='update'){
       var service = $.parseJSON(data.service);
       var user = $.parseJSON(data.user);
       make_appointment_row(appointment, user, service);
       colorize_appointments();
     }else if(action=='destroy'){
-      alert(appointment);
       remove_appointment_row(appointment);
     };
+
   });
 
 
@@ -140,7 +140,6 @@ var fetch_appointments_dates = function(){
   });
 };
 
-
 var make_appointment_row = function(appointment, user, service){
   var formatted_appointment_date = $.format.date(appointment.appointment_date, "ddd, HH:mm (dd MMM)");
   var newTr = "<tr data-link='/appointments/"+appointment.id+"/edit' id="+appointment.id+"> \
@@ -149,8 +148,16 @@ var make_appointment_row = function(appointment, user, service){
                   <td>"+user.name+"</td> \
                   <td>"+service.name+"</td> \
               </tr> "
-$('tr#'+appointment.id).replaceWith(newTr);
-$('tr#'+appointment.id).css('text-transform', 'capitalize');
+
+  //still on the same user
+  if( $('tr#'+appointment.id).length > 0){
+    $('tr#'+appointment.id).replaceWith(newTr);
+  }//went to a new user
+  else{
+    $('tbody').append(newTr);
+  };
+  $('tr#'+appointment.id).css('text-transform', 'capitalize');
+
 };
 
 var remove_appointment_row = function(appointment){
