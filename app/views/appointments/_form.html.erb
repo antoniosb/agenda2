@@ -33,8 +33,7 @@
       <span class='input-group-addon glyphicon glyphicon-calendar'></span>
       <%= f.select :appointment_date, available_datetimes_for_next_week(@appointment.appointment_date), {}, class:'form-control' %>
     </div>
-
-    <% if modal %>
+    <% if action_name == 'index' %>
         <%= render 'form_submit_button_new' %>
     <% elsif action_name == 'edit'%>
         <%= render 'form_submit_button_edit' %>

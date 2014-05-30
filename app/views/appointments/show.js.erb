@@ -1,3 +1,11 @@
-$('#appointments_table').append("<%= j render partial: 'table_row', locals: {appointment: @appointment } %>");
+<% publish_to "/appointments/#{@appointment.user.id}" do %>
+  $('#appointments_table').append("<%= j render partial: 'table_row', locals: {appointment: @appointment } %>");
+  colorize_appointments();
+<% end %>
+
+  <% publish_to "/appointments/all" do %>
+    $('#appointments_table').append("<%= j render partial: 'table_row', locals: {appointment: @appointment } %>");
+    colorize_appointments();
+  <% end %>
+
 $('#new_appointment_modal').modal_success();
-colorize_appointments();

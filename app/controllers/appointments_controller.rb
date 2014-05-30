@@ -59,9 +59,6 @@ class AppointmentsController < ApplicationController
   def update
     authorize @appointment
     if @appointment.update(appointment_params)
-     # if !current_user.admin?
-     #   @appointment.update_attribute :status, Appointment::PENDING
-     # end
       redirect_to :appointments, notice: 'Appointment was successfully updated.'
     else
       render action: 'edit'

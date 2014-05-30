@@ -45,3 +45,8 @@
     </div>
   </div>
 </div>
+<% if current_user.admin? %>
+  <%= subscribe_to "/appointments/all" %>
+<% else %>
+  <%= subscribe_to "/appointments/#{current_user.id}" %>
+<% end %>

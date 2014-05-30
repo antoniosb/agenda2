@@ -10,6 +10,10 @@ gem 'pg'
 gem 'bootstrap-sass'
 gem 'pundit'
 gem 'unicorn'
+gem 'private_pub'
+gem 'thin'
+
+
 
 group :development, :test do
   gem 'guard'
