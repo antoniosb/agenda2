@@ -62,7 +62,7 @@ class AppointmentsController < ApplicationController
      # if !current_user.admin?
      #   @appointment.update_attribute :status, Appointment::PENDING
      # end
-      redirect_to @appointment, notice: 'Appointment was successfully updated.'
+      redirect_to :appointments, notice: 'Appointment was successfully updated.'
     else
       render action: 'edit'
     end

@@ -4,30 +4,19 @@
 <div class="panel-body">
   <%= form_for(@appointment, remote: remote, html:{ role: :form, 'data-model'=>'appointment' }) do |f| %>
     
-      <% if @status %>
-        <div class='col-md-4'>
+      <% if @status && current_user.admin? %>
+        <div class='col-md-5'>
           <div class='input-group no-margin'>
             <span class='input-group-addon glyphicon glyphicon-stats'></span>
             <span class='form-control'>Status</span>
           </div>
-        <% if current_user.admin? %>
           <% @status.each do |status| %>
             <div class='input-group no-margin'>
               <span class='input-group-addon'><%= f.radio_button :status, status, :checked => @appointment.status == status %></span>
-              <span class='form-control'><%= status.humanize %></span>
+              <span class='form-control <%= color_for_status(status) %>'><%= status.humanize %></span>
             </div>
           <% end %>
-        <% else %>
-          <%= f.label :status %>
-          <% @status.each do |status| %>
-            <div class='input-group no-margin'>
-              <span class='input-group-addon'><%= f.radio_button :status, status, :checked => @appointment.status == status, disabled: true %></span>
-              <span class='form-control'><%= status.humanize %></span>
-            </div>
-          <% end %>
-        <% end %>
-
-      </div>
+        </div>
       <% end %>
 
     <div class='input-group'>
