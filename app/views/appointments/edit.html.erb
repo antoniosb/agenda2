@@ -9,7 +9,9 @@
   <div class='btn-group btn-group pull-right'>
     <span class='btn btn-default'><%= link_to 'Show', @appointment %></span>
     <span class='btn btn-default'><%= link_to 'Back', appointments_path %></span>
-    <span class='btn btn-default'><%= link_to 'Destroy', @appointment, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+    <% if current_user.admin? %>
+      <span class='btn btn-default'><%= link_to 'Destroy', @appointment, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+    <% end %>
   </div>
 </div>
 

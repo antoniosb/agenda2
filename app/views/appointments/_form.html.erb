@@ -4,34 +4,36 @@
 <div class="panel-body">
   <%= form_for(@appointment, remote: remote, html:{ role: :form, 'data-model'=>'appointment' }) do |f| %>
     
-      <% if @status && current_user.admin? %>
+      <% if @status %>
         <div class='col-md-5'>
           <div class='input-group no-margin'>
             <span class='input-group-addon glyphicon glyphicon-stats'></span>
             <span class='form-control'>Status</span>
           </div>
           <% @status.each do |status| %>
+          <% if !disable_user_status(status) %>
             <div class='input-group no-margin'>
               <span class='input-group-addon'><%= f.radio_button :status, status, :checked => @appointment.status == status %></span>
               <span class='form-control <%= color_for_status(status) %>'><%= status.humanize %></span>
             </div>
+          <% end %>
           <% end %>
         </div>
       <% end %>
 
     <div class='input-group'>
       <span class='input-group-addon glyphicon glyphicon-user'></span>
-      <%= f.select :user_id, @users, {}, class:'form-control' %>
+      <%= f.select :user_id, @users, {}, class:'form-control', disabled: disable_user_edition %>
     </div>
 
     <div class='input-group'>
       <span class='input-group-addon glyphicon glyphicon-screenshot'></span>
-      <%= f.select :service_id, @services, {}, class:'form-control' %>
+      <%= f.select :service_id, @services, {}, class:'form-control', disabled: disable_user_edition  %>
     </div>
 
     <div class='input-group'>
       <span class='input-group-addon glyphicon glyphicon-calendar'></span>
-      <%= f.select :appointment_date, available_datetimes_for_next_week(@appointment.appointment_date), {}, class:'form-control' %>
+      <%= f.select :appointment_date, available_datetimes_for_next_week(@appointment.appointment_date), {}, class:'form-control', disabled: disable_user_edition  %>
     </div>
     <% if action_name == 'index' %>
         <%= render 'form_submit_button_new' %>

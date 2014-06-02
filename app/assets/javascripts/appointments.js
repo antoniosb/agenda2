@@ -5,17 +5,33 @@ $(document).ready(function(){
   PrivatePub.subscribe("/appointments/"+user, function(data, channel){
     var action = data.action_name;
     var appointment = $.parseJSON(data.appointment);
-
+    var adminChannel = false;
     if(action=='update'){
       var service = $.parseJSON(data.service);
       var user = $.parseJSON(data.user);
-      make_appointment_row(appointment, user, service);
+      make_appointment_row(appointment, user, service, adminChannel);
       colorize_appointments();
     }else if(action=='destroy'){
       remove_appointment_row(appointment);
     };
 
   });
+
+  PrivatePub.subscribe("/appointments/all", function(data, channel){
+    var action = data.action_name;
+    var appointment = $.parseJSON(data.appointment);
+    var adminChannel = true;
+    var service = $.parseJSON(data.service);
+    var user = $.parseJSON(data.user);
+    make_appointment_row(appointment, user, service, adminChannel);
+    colorize_appointments();
+
+
+  });
+
+
+
+
 
 //it makes every table row (which is an appointment description) clickable
   $("tr[data-link]").click(function() {
@@ -142,15 +158,21 @@ var fetch_appointments_dates = function(){
   });
 };
 
-var make_appointment_row = function(appointment, user, service){
+var make_appointment_row = function(appointment, user, service, admin){
   var formatted_appointment_date = $.format.date(appointment.appointment_date, "ddd, HH:mm (dd MMM)");
   var newTr = "<tr data-link='/appointments/"+appointment.id+"/edit' id="+appointment.id+"> \
                 <td>"+formatted_appointment_date+"</td> \
                 <td class='status-color'>"+appointment.status+"</td> \
                   <td>"+user.name+"</td> \
-                  <td>"+service.name+"</td> \
-                  <td></td> \
+                  <td>"+service.name+"</td>";      
+  if(admin){
+    newTr += "<td class='removable-item text-center'> \
+                  <input id='appointments_' type='checkbox' value="+appointment.id+" \
+                    name='appointments[]'></input></td> \
               </tr> "
+  }else{
+    newTr += "<td></td></tr>"
+  }
 
   //still on the same user
   if( $('tr#'+appointment.id).length > 0){

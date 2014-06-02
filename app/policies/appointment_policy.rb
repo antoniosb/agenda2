@@ -34,7 +34,8 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.admin? && [Appointment::CONFIRMED, Appointment::PENDING].include?(record.status)
+    (user.admin? && [Appointment::CONFIRMED, Appointment::PENDING].include?(record.status)) ||
+    (!user.admin? && record.status == Appointment::PENDING)
   end
 
   def update?

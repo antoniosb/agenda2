@@ -88,6 +88,11 @@ class AppointmentsController < ApplicationController
           })
       end
 
+      PrivatePub.publish_to( "/appointments/all", 
+        appointment: @appointment.to_json, 
+        user: @appointment.user.to_json,
+        service: @appointment.service.to_json)
+
 
       redirect_to :appointments, notice: 'Appointment was successfully updated.'
     else

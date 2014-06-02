@@ -29,4 +29,12 @@ module AppointmentsHelper
     end
   end
 
+  def disable_user_status(status)
+    !current_user.admin? && [Appointment::CONFIRMED, Appointment::CONCLUDED, Appointment::PENDING].include?(status)
+  end
+
+  def disable_user_edition
+    !current_user.admin? && action_name == 'edit'
+  end
+
 end
