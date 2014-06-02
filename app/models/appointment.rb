@@ -24,6 +24,10 @@ class Appointment < ActiveRecord::Base
 
   scope :by_datetime, -> { Appointment.order(:appointment_date) }
 
+  def destroyable?
+    [Appointment::CONCLUDED, Appointment::CANCELED].include? self.status
+  end
+
 private
     def downcase_status
       self.status = status.try(:downcase)

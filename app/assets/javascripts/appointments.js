@@ -17,8 +17,6 @@ $(document).ready(function(){
 
   });
 
-
-
 //it makes every table row (which is an appointment description) clickable
   $("tr[data-link]").click(function() {
     window.location = this.dataset.link;

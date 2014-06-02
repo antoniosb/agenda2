@@ -40,4 +40,31 @@ describe Appointment do
       expect(Appointment.by_datetime.first.appointment_date).to eq Appointment.minimum(:appointment_date)
     end
   end
+
+  context "#destroyable?" do
+    let(:appointment) { create(:appointment) }
+
+    it "returns true if appointment is 'canceled'" do
+      appointment.status = 'canceled'
+      appointment.save!
+      expect(appointment.destroyable?).to be_true
+      
+    end
+    it "returns true if appointment is 'concluded'" do
+      appointment.status = 'concluded'
+      appointment.save!
+      expect(appointment.destroyable?).to be_true
+    end
+    it "returns false if appointment is 'pending'" do
+      appointment.status = 'pending'
+      appointment.save!
+      expect(appointment.destroyable?).to be_false
+    end
+    it "returns false if appointment is 'confirmed'" do
+      appointment.status = 'confirmed'
+      appointment.save!
+      expect(appointment.destroyable?).to be_false
+    end
+
+  end
 end
