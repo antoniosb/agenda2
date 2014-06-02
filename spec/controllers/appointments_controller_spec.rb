@@ -58,7 +58,7 @@ describe AppointmentsController do
 
       it "redirects to the created appointment" do
         post :create, {:appointment => valid_attributes}
-        response.should redirect_to(Appointment.last)
+        response.should be_ok
       end
     end
 
@@ -95,9 +95,9 @@ describe AppointmentsController do
         assigns(:appointment).should eq(appointment)
       end
 
-      it "redirects to the appointment" do
+      it "redirects to the appointments index" do
         put :update, {:id => appointment.to_param, :appointment => valid_attributes}
-        response.should redirect_to(appointment)
+        response.should redirect_to(appointments_url)
       end
     end
 
@@ -127,6 +127,25 @@ describe AppointmentsController do
 
     it "redirects to the appointments list" do
       delete :destroy, {:id => appointment.to_param}
+      response.should redirect_to(appointments_url)
+    end
+  end
+
+  describe "DELETE destroy_multiple" do
+    it "deletes only canceled/concluded appointments" do
+      expect { 
+        delete :destroy_multiple, :appointments=> appointment.id 
+      }.to change(Appointment, :count).by 0
+    end
+    it "deletes the requested appointments" do
+      appointment.status = 'canceled'
+      appointment.save
+      expect { 
+        delete :destroy_multiple, :appointments=> appointment.id 
+      }.to change(Appointment, :count).by -1
+    end
+    it "redirects to appointments index" do
+      delete :destroy_multiple, { :appointments=> appointment.id }
       response.should redirect_to(appointments_url)
     end
   end

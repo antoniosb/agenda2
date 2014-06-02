@@ -23,6 +23,10 @@ $(document).ready(function(){
     fetch_appointments_dates();
   });
 
+  $("tr td.removable-item").click(function(e){
+    e.stopPropagation();
+  });
+
 //it makes the table rows colored depending on its status
   colorize_appointments();
 
@@ -145,6 +149,7 @@ var make_appointment_row = function(appointment, user, service){
                 <td class='status-color'>"+appointment.status+"</td> \
                   <td>"+user.name+"</td> \
                   <td>"+service.name+"</td> \
+                  <td></td> \
               </tr> "
 
   //still on the same user

@@ -11,4 +11,9 @@
   <% else %>
     <td></td>
   <% end %>
+    <% if appointment.destroyable? && current_user.admin? %>
+      <td class='removable-item text-center'><%= check_box_tag "appointments[]", appointment.id %></td>
+    <% else %>
+      <td></td>
+    <% end %>
 </tr>

@@ -42,7 +42,11 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def destroy?
-    role_fence && record.status != Appointment::CONCLUDED
+    role_fence
+  end
+
+  def destroy_multiple?
+    user.admin? && [Appointment::CANCELED, Appointment::CONCLUDED].include?(record.status)
   end
 
 private 

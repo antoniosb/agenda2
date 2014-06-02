@@ -3,6 +3,19 @@ class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
   before_action :set_users_and_services, only:[:new, :create, :edit, :index]
   
+  # DELETE /appointments/destroy_multiple
+  def destroy_multiple
+    appointments = Appointment.where(id:params[:appointments])
+    appointments.each do |appointment|
+      authorize appointment
+      appointment.destroy
+      PrivatePub.publish_to("/appointments/#{appointment.user.id}",
+        appointment: appointment.to_json,
+        action_name: "destroy")  
+    end
+    redirect_to appointments_path, notice: 'The selected records were successfully deleted.'
+  end
+
   #POST /appointments_dates
   def fetch_dates
     @dates = available_datetimes_for_next_week

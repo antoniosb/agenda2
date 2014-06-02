@@ -1,8 +1,12 @@
 Agenda2::Application.routes.draw do
   get "home/index"
-  resources :services
-  resources :appointments
   devise_for :users
+  resources :services
+  resources :appointments do
+    collection do
+      delete 'destroy_multiple'
+    end
+  end
 
   get "begin", to: "appointments#index", as: "user_root"
 
