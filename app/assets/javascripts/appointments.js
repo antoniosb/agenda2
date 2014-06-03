@@ -29,15 +29,8 @@ $(document).ready(function(){
 
   });
 
-
-
-
-
 //it makes every table row (which is an appointment description) clickable
-  $("tr[data-link]").click(function() {
-    window.location = this.dataset.link;
-    fetch_appointments_dates();
-  });
+  make_table_row_clickable();
 
   $("tr td.removable-item").click(function(e){
     e.stopPropagation();
@@ -189,4 +182,11 @@ var remove_appointment_row = function(appointment){
   $('tr#'+appointment.id).fadeOut(1000, 'linear', function(){
     $(this).remove();
   });
+};
+
+var make_table_row_clickable = function(){
+  $("tr[data-link]").click(function() {
+      window.location = this.dataset.link;
+      fetch_appointments_dates();
+    });
 };

@@ -123,6 +123,8 @@ class AppointmentsController < ApplicationController
     end
 
     def set_users_and_services
+      authorize Appointment, :set_users_and_services?
+      #raise Pundit::NotAuthorizedError, "must be logged in" unless current_user
       @services = Service.all.collect { |x| [x.name, x.id] }
       @users = User.all.map do |user|
         if current_user.admin?

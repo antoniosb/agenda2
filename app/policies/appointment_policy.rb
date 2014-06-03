@@ -2,7 +2,6 @@ class AppointmentPolicy < ApplicationPolicy
   attr_reader :user, :record
 
   def initialize(user, record)
-    raise Pundit::NotAuthorizedError, "must be logged in" unless user
     @user = user
     @record = record
   end
@@ -18,7 +17,7 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user
   end
 
   def show?
@@ -26,7 +25,7 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def new?
-    true
+    index?
   end
 
   def create?
@@ -48,6 +47,10 @@ class AppointmentPolicy < ApplicationPolicy
 
   def destroy_multiple?
     user.admin? && [Appointment::CANCELED, Appointment::CONCLUDED].include?(record.status)
+  end
+
+  def set_users_and_services?
+    user
   end
 
 private 
