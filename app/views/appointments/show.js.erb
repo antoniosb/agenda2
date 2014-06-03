@@ -4,10 +4,10 @@
   make_table_row_clickable();
 <% end %>
 
-  <% publish_to "/appointments/all" do %>
-    $('#appointments_table').append("<%= j render partial: 'table_row', locals: {appointment: @appointment } %>");
-    colorize_appointments();
-    make_table_row_clickable();
-  <% end %>
+<% publish_to "/appointments/all" do %>
+  $('#appointments_table').append("<%= j render partial: 'table_row', locals: {appointment: @appointment } %>");
+  colorize_appointments();
+  make_table_row_clickable();
+<% end %>
 
 $('#new_appointment_modal').modal_success();

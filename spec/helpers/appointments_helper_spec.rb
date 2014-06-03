@@ -14,4 +14,17 @@ describe AppointmentsHelper do
       end
     end
   end
+
+  describe "#color_for_status" do
+    context "returns a label accondingly to 'Bootstrap' framework" do
+      it { expect(color_for_status 'pending').to eq 'label-info' }
+      
+      it { expect(color_for_status 'confirmed').to eq 'label-success' }
+        
+      it { expect(color_for_status 'concluded').to eq 'label-warning' }
+        
+      it { expect(color_for_status 'canceled').to eq 'label-danger' }
+    end
+  end
+  
 end

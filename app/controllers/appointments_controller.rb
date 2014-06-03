@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-  include AppointmentsHelper
+  include AppointmentsHelper, PublicationHelper
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
   before_action :set_users_and_services, only:[:new, :create, :edit, :index]
   
@@ -9,9 +9,7 @@ class AppointmentsController < ApplicationController
     appointments.each do |appointment|
       authorize appointment
       appointment.destroy
-      PrivatePub.publish_to("/appointments/#{appointment.user.id}",
-        appointment: appointment.to_json,
-        action_name: "destroy")  
+      PublicationHelper::Appointments.publish_on_destroy "/appointments/#{appointment.user.id}", appointment
     end
     redirect_to appointments_path, notice: 'The selected records were successfully deleted.'
   end
@@ -73,27 +71,9 @@ class AppointmentsController < ApplicationController
     authorize @appointment
     old_user_id = @appointment.user_id_was
     if @appointment.update(appointment_params)
-      PrivatePub.publish_to( "/appointments/#{@appointment.user.id}", 
-        appointment: @appointment.to_json, 
-        user: @appointment.user.to_json,
-        service: @appointment.service.to_json,
-        action_name: "update" )
-      
-      if old_user_id != @appointment.user_id
-        PrivatePub.publish_to( "/appointments/#{old_user_id}",
-          %Q{
-            $('tr##{@appointment.id}').fadeOut(1000, 'linear', function(){
-              $(this).remove();
-            });     
-          })
-      end
-
-      PrivatePub.publish_to( "/appointments/all", 
-        appointment: @appointment.to_json, 
-        user: @appointment.user.to_json,
-        service: @appointment.service.to_json)
-
-
+      PublicationHelper::Appointments.publish_on_update("/appointments/#{@appointment.user.id}", @appointment, old_user_id)
+      PublicationHelper::Appointments.publish_on_update("/appointments/all", @appointment)
+    
       redirect_to :appointments, notice: 'Appointment was successfully updated.'
     else
       render action: 'edit'
@@ -104,9 +84,7 @@ class AppointmentsController < ApplicationController
   def destroy
     authorize @appointment
     @appointment.destroy
-    PrivatePub.publish_to("/appointments/#{@appointment.user.id}",
-      appointment: @appointment.to_json,
-      action_name: "destroy")     
+    PublicationHelper::Appointments.publish_on_destroy("/appointments/#{@appointment.user.id}", @appointment)     
 
     redirect_to appointments_url, notice: 'Appointment was successfully destroyed.'
   end
@@ -124,7 +102,6 @@ class AppointmentsController < ApplicationController
 
     def set_users_and_services
       authorize Appointment, :set_users_and_services?
-      #raise Pundit::NotAuthorizedError, "must be logged in" unless current_user
       @services = Service.all.collect { |x| [x.name, x.id] }
       @users = User.all.map do |user|
         if current_user.admin?
