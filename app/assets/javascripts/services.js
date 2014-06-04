@@ -7,9 +7,7 @@ $(document).ready(function(){
 
   });
 
-  $("tr[data-link]").click(function() {
-    window.location = this.dataset.link
-  });
+  make_table_row_clickable();
 
   $('.create-service').click(function(){
     $('#help-block').fadeIn(1000);
@@ -68,3 +66,9 @@ $(document).ready(function(){
   }
 
 }(jQuery));
+
+var make_table_row_clickable = function(){
+  $("tr[data-link]").click(function() {
+      window.location = this.dataset.link;
+    });
+};
