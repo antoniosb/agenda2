@@ -60,6 +60,22 @@ $(document).ready(function(){
     $('#appointment_appointment_date').find('option').remove();
   });
 
+//change status when click on index
+  $('tr td.change-status').click(function(e){
+    e.stopPropagation();
+
+    $.post('/rotate_appointment_status', 
+        {status_name : $(this).data("status-name"), appointment_id: $(this).data("appointment-id") }, 
+        function(appointment){          
+          $('tr td.change-status[data-appointment-id='+appointment.id+']')
+            .html(appointment.status)
+            .css('text-transform','capitalize')
+            .data('status-name',appointment.status)
+            .parent().removeClass();
+          colorize_appointments();
+    });
+  });
+
 
 
 });

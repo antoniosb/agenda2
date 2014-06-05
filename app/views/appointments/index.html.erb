@@ -11,7 +11,7 @@
           <th>Status</th>
           <th>User</th>
           <th>Service</th>
-          <% if current_user.admin? %>
+          <% if current_user.admin? && @appointments.map(&:destroyable?).any? %>
             <th class='col-md-1 btn btn-danger btn-sm'><%= submit_tag "Delete Selected", style:'border: 0;background:none;' %></th>
           <% end %>
         </tr>

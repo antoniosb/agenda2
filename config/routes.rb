@@ -14,6 +14,8 @@ Agenda2::Application.routes.draw do
 
   post "appointments_dates", to:"appointments#fetch_dates"
 
+  post "rotate_appointment_status", to:"appointments#rotate_status"
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

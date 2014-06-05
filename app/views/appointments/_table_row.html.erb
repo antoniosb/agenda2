@@ -1,6 +1,6 @@
 <tr data-link="<%= edit_appointment_path(appointment) %>" id="<%= appointment.id %>">
   <td><%= appointment.appointment_date.strftime('%A, %R (%d %B)') %></td>
-  <td class='status-color'><%= appointment.status.humanize %></td>
+  <td class='status-color change-status' data-appointment-id="<%= appointment.id %>" data-status-name="<%= appointment.status %>"><%= appointment.status.humanize %></td>
   <td><%= appointment.user.name.humanize %></td>
   <% if appointment.service.present? %>
     <td><%= appointment.service.name.humanize %></td>

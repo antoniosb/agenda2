@@ -3,6 +3,17 @@ class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
   before_action :set_users_and_services, only:[:new, :create, :edit, :index]
   
+  #POST /appointments/rotate_status
+  def rotate_status
+    @current_appointment = Appointment.find(params[:appointment_id])
+    new_status = Appointment::APPOINTMENT_STATUS.rotate(Appointment::APPOINTMENT_STATUS.index(params[:status_name]) + 1).first
+    if @current_appointment.update_attributes(status: new_status)
+      render json: @current_appointment, status: :ok, location: :appointments 
+    else
+      redirect_to appointments_path
+    end  
+  end
+
   # DELETE /appointments/destroy_multiple
   def destroy_multiple
     appointments = Appointment.where(id:params[:appointments])
