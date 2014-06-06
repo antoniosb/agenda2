@@ -8,6 +8,7 @@
   $('#appointments_table').append("<%= j render partial: 'table_row', locals: {appointment: @appointment } %>");
   colorize_appointments();
   make_table_row_clickable();
+  toggle_status();
 <% end %>
 
 $('#new_appointment_modal').modal_success();

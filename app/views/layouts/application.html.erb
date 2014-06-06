@@ -15,6 +15,7 @@
             <a class="user_info" href="mailto:<%= current_user.email %>"><span class="glyphicon glyphicon-envelope pull-right">&nbsp;<%= current_user.email %></span></a>
           </p>
           <%= tag :meta, :name=>'user_id', content: current_user.id %>
+          <%= tag :meta, :name=>'is_admin', content: current_user.admin? %>
       <% end %>
 
       <ul class="nav nav-justified">

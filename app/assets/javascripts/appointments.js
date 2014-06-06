@@ -2,6 +2,8 @@
 $(document).ready(function(){
 
   var user = $("meta[name=user_id]").attr("content");
+  var isAdmin = $("meta[name=is_admin]").attr("content");
+
   PrivatePub.subscribe("/appointments/"+user, function(data, channel){
     var action = data.action_name;
     var appointment = $.parseJSON(data.appointment);
@@ -32,9 +34,8 @@ $(document).ready(function(){
 //it makes every table row (which is an appointment description) clickable
   make_table_row_clickable();
 
-  $("tr td.removable-item").click(function(e){
-    e.stopPropagation();
-  });
+//makes a table cell clickable for another event
+  make_table_cell_clickable();
 
 //it makes the table rows colored depending on its status
   colorize_appointments();
@@ -61,21 +62,9 @@ $(document).ready(function(){
   });
 
 //change status when click on index
-  $('tr td.change-status').click(function(e){
-    e.stopPropagation();
-
-    $.post('/rotate_appointment_status', 
-        {status_name : $(this).data("status-name"), appointment_id: $(this).data("appointment-id") }, 
-        function(appointment){          
-          $('tr td.change-status[data-appointment-id='+appointment.id+']')
-            .html(appointment.status)
-            .css('text-transform','capitalize')
-            .data('status-name',appointment.status)
-            .parent().removeClass();
-          colorize_appointments();
-    });
-  });
-
+  if(isAdmin == 'true'){ 
+    toggle_status();
+  };
 
 
 });
@@ -205,4 +194,62 @@ var make_table_row_clickable = function(){
       window.location = this.dataset.link;
       fetch_appointments_dates();
     });
+};
+
+var toggle_status = function(){
+
+  $('tr td.change-status').click(function(e){
+    e.stopPropagation();
+
+    $.post('/rotate_appointment_status', 
+        {status_name : $(this).data("status-name"), appointment_id: $(this).data("appointment-id") }, 
+        function(appointment){          
+          $('tr td.change-status[data-appointment-id='+appointment.id+']')
+            .html(appointment.status)
+            .css('text-transform','capitalize')
+            .data('status-name',appointment.status)
+            .parent().removeClass();
+          colorize_appointments();
+
+
+          var status =[];
+          $('table tbody').find('tr').each(function(idx, elem){
+            status.push( $(this).find('td').eq(1).text().toLowerCase() );
+          });
+  
+          status = status.filter(function(elem){
+            return ['canceled', 'concluded'].indexOf(elem) != -1
+          });
+
+          if ( (status.length <= 0) && ($('table th:last').has('input').length > 0) ){
+            $('table th:last').remove();
+          }
+
+          if( $.inArray(appointment.status, ['confirmed', 'pending']) != -1 ){
+            $('tr td.change-status[data-appointment-id='+appointment.id+']')
+              .parent().find('td:last').html('');
+          } else {
+              var html = " \
+                <input id='appointments_' type='checkbox' \
+                  value="+appointment.id+" name='appointments[]''></input> ";
+              $('tr td.change-status[data-appointment-id='+appointment.id+']')
+              .parent().find('td:last').html(html).addClass('removable-item text-center');
+              
+              //add button
+              if($('table th:last').has('input').length <= 0){
+                $('table tr:first').append(" <th class='col-md-1 btn btn-danger btn-sm'> \
+                    <input type='submit' value='Delete Selected' style='border: 0;background:none;' \
+                     name='commit'></input></th>");
+              }
+          };
+          make_table_cell_clickable();
+    });
+  });
+
+};
+
+var make_table_cell_clickable = function(){
+    $("tr td.removable-item").click(function(e){
+    e.stopPropagation();
+  });
 };
