@@ -8,6 +8,7 @@ class AppointmentsController < ApplicationController
     @current_appointment = Appointment.find(params[:appointment_id])
     new_status = Appointment::APPOINTMENT_STATUS.rotate(Appointment::APPOINTMENT_STATUS.index(params[:status_name]) + 1).first
     if @current_appointment.update_attributes(status: new_status)
+      PublicationHelper::Appointments.publish_on_update("/appointments/#{@current_appointment.user.id}", @current_appointment)
       render json: @current_appointment, status: :ok, location: :appointments 
     else
       redirect_to appointments_path
