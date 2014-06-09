@@ -17,7 +17,7 @@ class Appointment < ActiveRecord::Base
   validates_uniqueness_of :appointment_date, conditions: -> { where(status:['pending', 'confirmed']) }
 
   validates :status, 
-      inclusion: { in: APPOINTMENT_STATUS, message: "%{value} is not a valid status!" }
+      inclusion: { in: APPOINTMENT_STATUS << Appointment::OVERDUE, message: "%{value} is not a valid status!" }
 
   before_validation :downcase_status
 
@@ -25,8 +25,15 @@ class Appointment < ActiveRecord::Base
 
   scope :by_datetime, -> { Appointment.order(:appointment_date) }
 
+  scope :overdue, -> { where("appointment_date < ? ", DateTime.now.beginning_of_hour).
+                        where(status:[Appointment::PENDING, Appointment::CONFIRMED]) }
+
   def destroyable?
     [Appointment::CONCLUDED, Appointment::CANCELED, Appointment::OVERDUE].include? self.status
+  end
+
+  def self.set_overdue_appointments
+    Appointment.overdue.update_all status: Appointment::OVERDUE
   end
 
 private

@@ -12,7 +12,7 @@ gem 'pundit'
 gem 'unicorn'
 gem 'private_pub'
 gem 'thin'
-
+gem 'whenever', require: false
 
 
 group :development, :test do

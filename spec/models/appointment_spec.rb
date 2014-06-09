@@ -41,6 +41,47 @@ describe Appointment do
     end
   end
 
+  context "scope: overdue" do
+    before(:each) do
+      Appointment.delete_all  
+    end
+
+    let(:appointment1) { build(:appointment) }
+    let(:appointment2) { build(:appointment) }
+    let(:appointment3) { build(:appointment) }
+
+    it "returns all appointments which has a past date" do
+      appointment1.appointment_date = DateTime.now - 1.hour
+      appointment2.appointment_date = DateTime.now - 1.day
+      appointment3.appointment_date = DateTime.now
+
+      appointment1.save; appointment2.save; appointment3.save
+
+      expect(Appointment.overdue.count).to eq 2
+    end
+    it "considers the date from the beginning of the hour" do
+      appointment1.appointment_date = DateTime.now.beginning_of_hour - 1.second
+      appointment2.appointment_date = DateTime.now.beginning_of_hour 
+      appointment3.appointment_date = DateTime.now.beginning_of_hour + 1.second 
+
+      appointment1.save; appointment2.save; appointment3.save
+
+      expect(Appointment.overdue.count).to eq 1
+    end
+    it "only cares about 'pending' and 'confirmed' appointments" do
+      appointment1.status = 'canceled'
+      appointment1.appointment_date = DateTime.now - 1.week
+      appointment2.status = 'confirmed'
+      appointment2.appointment_date = DateTime.now - 1.week
+      appointment3.status = 'pending'
+      appointment3.appointment_date = DateTime.now.beginning_of_hour - 1.second
+
+      appointment1.save; appointment2.save; appointment3.save
+
+      expect(Appointment.overdue.count).to eq 2
+    end
+  end
+
   context "#destroyable?" do
     let(:appointment) { create(:appointment) }
 
@@ -65,6 +106,28 @@ describe Appointment do
       appointment.save!
       expect(appointment.destroyable?).to be_false
     end
-
+    it "returns true if appointment is 'overdue'" do
+      appointment.status = 'overdue'
+      appointment.save!
+      expect(appointment.destroyable?).to be_true
+    end
   end
+
+  context "#set_overdue_appointments" do
+    before(:all) do
+      Appointment.delete_all
+      create_list(:appointment, 3)
+      Appointment.update_all appointment_date: DateTime.now - 2.hour
+    end
+    it "sets all past appointments status to overdue" do
+      Appointment.set_overdue_appointments
+      expect(Appointment.pluck(:status).uniq).to match_array ['overdue']
+    end
+    it "does not alter 'updated_at' fields" do
+      Appointment.all.each do |appointment|
+        expect(appointment.created_at).to eq appointment.updated_at
+      end
+    end
+  end
+
 end
