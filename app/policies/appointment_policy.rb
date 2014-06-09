@@ -46,7 +46,7 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def destroy_multiple?
-    user.admin? && [Appointment::CANCELED, Appointment::CONCLUDED].include?(record.status)
+    user.admin? && record.destroyable?
   end
 
   def set_users_and_services?

@@ -1,9 +1,10 @@
 class Appointment < ActiveRecord::Base
-  APPOINTMENT_STATUS = %w{pending confirmed concluded canceled}
+  APPOINTMENT_STATUS = %w{pending confirmed concluded canceled }
   CANCELED =     'canceled'
   CONCLUDED =    'concluded'
   PENDING =      'pending'
   CONFIRMED =    'confirmed'
+  OVERDUE = 'overdue'
   
   belongs_to :service
   belongs_to :user
@@ -25,7 +26,7 @@ class Appointment < ActiveRecord::Base
   scope :by_datetime, -> { Appointment.order(:appointment_date) }
 
   def destroyable?
-    [Appointment::CONCLUDED, Appointment::CANCELED].include? self.status
+    [Appointment::CONCLUDED, Appointment::CANCELED, Appointment::OVERDUE].include? self.status
   end
 
 private
