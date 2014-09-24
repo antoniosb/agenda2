@@ -17,3 +17,5 @@
 .env
 
 /config/private_pub.yml
+
+/doc

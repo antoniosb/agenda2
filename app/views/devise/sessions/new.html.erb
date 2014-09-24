@@ -6,19 +6,19 @@
 
     <div class="input-group">
       <%= f.email_field :email, autofocus: true, class:'form-control input-lg', placeholder:'Email' %>
-      <span class="input-group-addon glyphicon glyphicon-user"></span>
+      <span title='Your Email' class="input-group-addon glyphicon glyphicon-user"></span>
     </div>
 
     <div class="input-group">
       <%= f.password_field :password, autocomplete: "off", class:'form-control input-lg', placeholder:'Password' %>
-      <span class="input-group-addon glyphicon glyphicon-lock"></span>
+      <span title='Your Password' class="input-group-addon glyphicon glyphicon-lock"></span>
     </div>
 
     <% if devise_mapping.rememberable? -%>
       <div class="input-group">
         <span class="input-group-addon"><%= f.check_box :remember_me %></span>
         <span class="form-control"><%= f.label :remember_me, class:'text-muted' %></span>
-        <span class="input-group-addon glyphicon glyphicon-flag"></span>
+        <span title='Remember this session?' class="input-group-addon glyphicon glyphicon-flag"></span>
       </div>
     <% end -%>
 

@@ -5,22 +5,22 @@
     <%= form_for(@service, remote: remote, html:{ role: :form, 'data-model'=>'service' }) do |f| %>
 
       <div class='input-group'>
-        <span class='input-group-addon glyphicon glyphicon-user'></span>
+        <span title='Service Name' class='input-group-addon glyphicon glyphicon-user'></span>
           <%= f.text_field :name, class:'form-control', placeholder:'Name' %>
       </div>
 
       <div class='input-group'>
-        <span class='input-group-addon glyphicon glyphicon-usd'></span>
+        <span title='Service Price' class='input-group-addon glyphicon glyphicon-usd'></span>
           <%= f.text_field :price, class:'form-control', placeholder:'Price' %>
       </div>
              
       <div class='input-group'>
-        <span class='input-group-addon glyphicon glyphicon-time'></span>
-          <%= f.number_field :duration, class:'form-control', placeholder:'Duration' %>
+        <span title='The estimated duration in minutes' class='input-group-addon glyphicon glyphicon-time'></span>
+          <%= f.number_field :duration, class:'form-control', placeholder:'Duration', min: 0 %>
       </div>
             
       <div class='input-group'>
-        <span class='input-group-addon '><strong>%</strong></span>
+        <span title='The discount' class='input-group-addon '><strong>%</strong></span>
           <%= f.text_field :discount, class:'form-control', placeholder:'Discount' %>
       </div>
       

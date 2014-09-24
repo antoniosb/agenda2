@@ -1,9 +1,30 @@
 
-<div class='jumbotron'>
+<div class='jumbotron well'>
 
   <div class="panel panel-default">
     <div class="panel-body">
-      <h1 class='text-center text-danger'>Agenda2</h1>
+      <h1 class='text-center home_ops_font'>Services Through Appointments</h1>
+      <h5 class='text-right home_ops_font'>It's that simple!</h5>
+      <p class="text-primary text-center home_ops_font">  
+        This awesome application allows you to schedule your preferred services tottaly online! And the best, it's REAL TIME!!! 
+      </p>
+
+      <div class='panel panel-default'>
+        <div class='panel-body'>
+          <p class='home_ops_font'>Check it out how easy is to start scheduling your services!</p>
+          <ol class='list-group'>
+            <li class='list-group-item'> Your appointment starts at <span class="label label-primary">Pending</span> status. </li>
+            <li class='list-group-item'>When the owner of the service approves it, your appointment turns into the <span class="label label-success">Confirmed</span> status.</li>
+            <li class='list-group-item'>When the service is concluded, the owner updates it to <span class="label label-warning">Concluded</span> status.</li>
+            <li class='list-group-item'>If the service scheduled date overdue, it is updated to the <span class="label label-default">Overdue</span> status.</li>
+            <li class='list-group-item'>When your service is Pending or Confirmed, if you wish, you can cancel it. Thus your appointment goes to the <span class="label label-danger">Canceled</span> status.</li>
+            <li class='list-group-item'><h4><span class="label label-info home_ops_font">And the best, whenever your appointment changes status, both you and owner of the service are updated real time!</span></h4> </li>
+          </ol>
+          <%= link_to "Create your account now!", new_registration_path(resource_name), class: 'btn btn-primary btn-lg pull-right' %>
+        </div>
+
+      </div>
+
     </div>  
 
   </div>

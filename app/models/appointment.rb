@@ -17,7 +17,7 @@ class Appointment < ActiveRecord::Base
   validates_uniqueness_of :appointment_date, conditions: -> { where(status:['pending', 'confirmed']) }
 
   validates :status, 
-      inclusion: { in: APPOINTMENT_STATUS << Appointment::OVERDUE, message: "%{value} is not a valid status!" }
+      inclusion: { in: APPOINTMENT_STATUS.clone << Appointment::OVERDUE, message: "%{value} is not a valid status!" }
 
   before_validation :downcase_status
 

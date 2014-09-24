@@ -22,17 +22,17 @@
       <% end %>
 
     <div class='input-group'>
-      <span class='input-group-addon glyphicon glyphicon-user'></span>
+      <span title='Select a user' class='input-group-addon glyphicon glyphicon-user'></span>
       <%= f.select :user_id, @users, {}, class:'form-control', disabled: disable_user_edition %>
     </div>
 
     <div class='input-group'>
-      <span class='input-group-addon glyphicon glyphicon-screenshot'></span>
+      <span title='Select a service' class='input-group-addon glyphicon glyphicon-screenshot'></span>
       <%= f.select :service_id, @services, {}, class:'form-control', disabled: disable_user_edition  %>
     </div>
 
     <div class='input-group'>
-      <span class='input-group-addon glyphicon glyphicon-calendar'></span>
+      <span title='Select a valid date' class='input-group-addon glyphicon glyphicon-calendar'></span>
       <%= f.select :appointment_date, available_datetimes_for_next_week(@appointment.appointment_date), {}, class:'form-control', disabled: disable_user_edition  %>
     </div>
     <% if action_name == 'index' %>

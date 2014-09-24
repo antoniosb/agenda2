@@ -13,7 +13,8 @@ gem 'unicorn'
 gem 'private_pub'
 gem 'thin'
 gem 'whenever', require: false
-
+#gem 'railroady'
+#gem 'rails-erd'
 
 group :development, :test do
   gem 'guard'
