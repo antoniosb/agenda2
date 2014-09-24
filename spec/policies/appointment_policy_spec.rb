@@ -57,9 +57,9 @@ describe AppointmentPolicy do
           end
         end
         context "and the appointment is at 'concluded' status " do
-          it "not allowed" do
+          it "is allowed" do
             appointment.status = 'concluded'
-            expect(subject).not_to permit(user, appointment)
+            expect(subject).to permit(user, appointment)
           end
         end
       end
@@ -72,8 +72,8 @@ describe AppointmentPolicy do
     end
 
     permissions :edit?, :update? do
-      it "not allowed" do
-        expect(subject).not_to permit(user, appointment)
+      it "is allowed" do
+        expect(subject).to permit(user, appointment)
       end
     end
   end
