@@ -4,10 +4,10 @@ module AppointmentsHelper
     raw_array = (Time.zone.now.beginning_of_hour.to_i .. (Time.zone.now + 1.week)
       .to_i).step(15.minutes).to_a - Appointment.token_datetimes.map(&:to_i)
 
-    formatted_array = raw_array.map { |x| [ Time.at(x).strftime('%A, %R (%d %B)'), Time.at(x)] }
+    formatted_array = raw_array.map { |x| [ Time.zone.at(x).strftime('%A, %R (%d %B)'), Time.zone.at(x)] }
 
     if current_appointment_date
-      formatted_array.unshift( [ Time.at(current_appointment_date).strftime('%A, %R (%d %B)'), Time.at(current_appointment_date)] )
+      formatted_array.unshift( [ Time.zone.at(current_appointment_date).strftime('%A, %R (%d %B)'), Time.zone.at(current_appointment_date)] )
     else
       formatted_array
     end
