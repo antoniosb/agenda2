@@ -1,0 +1,10 @@
+development:
+  server: "http://localhost:9292/faye"
+  secret_token: "23456789lkjhgfd2134567kkjhgfdew34567uiojhnbvfd45678"
+test:
+  server: "http://localhost:9292/faye"
+  secret_token: "2345678909876543sxcvbnmklo98765refgbnhjmko98765red"
+production:
+  server: "http://appointment2services-pubserver.herokuapp.com//faye"
+  secret_token: "1234567890-98765redcvbnmklo98765efghjki98765rfgbnhjki876rfvbn"
+  signature_expiration: 86400 # one day
