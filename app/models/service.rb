@@ -3,8 +3,8 @@ class Service < ActiveRecord::Base
   has_many :users, through: :appointments
 
   validates :name, 
-      format: { with: /\A[a-zA-Z]+\z/, message: "only allows letters" },
-      length: { in: 2..20 },
+      format: { with: /\w/, message: "only allows letters" },
+      length: { in: 2..30 },
       presence: true,
       uniqueness: true
 
