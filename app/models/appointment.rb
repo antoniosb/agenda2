@@ -25,7 +25,7 @@ class Appointment < ActiveRecord::Base
 
   scope :by_datetime, -> { Appointment.order(:appointment_date) }
 
-  scope :overdue, -> { where("appointment_date < ? ", DateTime.now.beginning_of_hour).
+  scope :overdue, -> { where("appointment_date < ? ", Time.zone.now.beginning_of_hour).
                         where(status:[Appointment::PENDING, Appointment::CONFIRMED]) }
 
   def destroyable?
