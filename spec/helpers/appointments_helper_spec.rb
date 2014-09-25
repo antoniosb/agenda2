@@ -10,7 +10,7 @@ describe AppointmentsHelper do
     end
     it "ensure a valid value for the controller" do
       available_datetimes_for_next_week.each do |tuple|
-        expect(tuple[1]).to be_an_instance_of Time
+        expect(tuple[1]).to be_kind_of Time
       end
     end
   end
