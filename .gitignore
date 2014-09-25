@@ -16,7 +16,7 @@
 /tmp
 .env
 
-#/config/private_pub.yml
+/config/private_pub.yml
 /environments
 
 /config/database.yml
