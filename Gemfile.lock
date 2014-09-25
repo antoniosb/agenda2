@@ -130,11 +130,15 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    mailgun_rails (0.6.2)
+      rails (>= 3.2.13)
+      rest-client (>= 1.6.7)
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.5.3)
     minitest (4.7.5)
     multi_json (1.10.0)
+    netrc (0.7.7)
     nio4r (1.0.0)
     nokogiri (1.6.2)
       mini_portile (~> 0.5.2)
@@ -175,6 +179,9 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.4)
       ffi (>= 0.5.0)
+    rest-client (1.7.2)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -253,6 +260,7 @@ DEPENDENCIES
   guard-rspec
   jquery-rails
   letter_opener
+  mailgun_rails
   pg
   private_pub
   pundit

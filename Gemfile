@@ -13,6 +13,7 @@ gem 'unicorn'
 gem 'private_pub'
 gem 'thin'
 gem 'whenever', require: false
+gem 'mailgun_rails'
 #gem 'railroady'
 #gem 'rails-erd'
 
