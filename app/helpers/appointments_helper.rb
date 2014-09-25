@@ -1,7 +1,7 @@
 module AppointmentsHelper
 
   def available_datetimes_for_next_week(current_appointment_date=nil)
-    raw_array = (DateTime.now.beginning_of_hour.to_i .. (DateTime.now + 1.week)
+    raw_array = (Time.zone.now.beginning_of_hour.to_i .. (Time.zone.now + 1.week)
       .to_i).step(15.minutes).to_a - Appointment.token_datetimes.map(&:to_i)
 
     formatted_array = raw_array.map { |x| [ Time.at(x).strftime('%A, %R (%d %B)'), Time.at(x)] }
