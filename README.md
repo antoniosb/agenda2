@@ -3,7 +3,7 @@ Appointment 2 Services
 
 Sample Rails application that allows user to schedule services using pre-provided time slots
 
-Visit the [demo](http://appointment2services.herokuapp.com/). You can use the default `admin/admin` user to get access to the admin features, such as:
+Visit the [demo](http://appointment2services.herokuapp.com/). You can use the default `admin@admin.org / admin` user to get access to the admin features, such as:
 
 * CRUD Services
 * CRUD Appointments
