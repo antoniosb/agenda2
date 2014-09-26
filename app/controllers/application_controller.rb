@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
+  before_action :block_default_admin_from_edit, if: :devise_controller?
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
 protected
@@ -26,6 +28,12 @@ protected
     def user_not_authorized
       flash[:error] = "You are not authorized to perform this action."
       redirect_to root_path
+    end
+
+    def block_default_admin_from_edit
+      if params[:action] == 'edit' && current_user.email == 'admin@admin.org'
+        user_not_authorized
+      end
     end
 
 end
